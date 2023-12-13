@@ -9,3 +9,6 @@
 - テスト：データ表示のみ
 - 実行：データcsv書き込み
 - プログラム方法：Ctrl+C
+
+### class_sensor_data_logger.py
+- set_output_interval() : 出力頻度を変更
