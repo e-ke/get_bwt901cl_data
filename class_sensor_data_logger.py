@@ -11,7 +11,12 @@ class SensorDataLogger:
         self.sensor2 = BWT901CL(sensor2_port)
         self.filename = ''
         self.header = ''
-
+        self.output_interval = 0.1  # デフォルトの出力間隔を0.1秒に設定
+        
+    # 出力間隔を設定するメソッド
+    def set_output_interval(self, interval):
+        self.output_interval = interval
+    
     # CSVファイルの初期化
     def init_csv(self):
         if not os.path.exists('csv'):
@@ -80,7 +85,7 @@ class SensorDataLogger:
                 print(f"AngVel1:{s1_angVel_str}|AngVel2:{s2_angVel_str}",end="||")
                 print(f"Ang1:{s1_ang_str}|Ang2:{s2_ang_str}")
 
-                sleep(0.1) # 出力頻度
+                sleep(self.output_interval) # 出力頻度
         except KeyboardInterrupt:
             self.handle_keyboard_interrupt(stop_event, thread1, thread2)
 
@@ -113,7 +118,7 @@ class SensorDataLogger:
                         file.flush()
                         last_flush_time = time()
 
-                    sleep(0.1) # 出力頻度
+                    sleep(self.output_interval) # 出力頻度
 
             except KeyboardInterrupt:
                 self.handle_keyboard_interrupt(stop_event, thread1, thread2)
