@@ -9,14 +9,14 @@
 
 
 ### 使い方
-
+> python main.py
 
 ### main.py
 - 実行用
 - 2台のセンサーのポートを指定
 - テスト：データ表示のみ
 - 実行：データcsv書き込み
-- プログラム方法：Ctrl+C
+- プログラム停止方法：Ctrl+C
 
 ### class_sensor_data_logger.py
 - set_output_interval() : 出力頻度を変更
