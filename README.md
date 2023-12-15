@@ -3,6 +3,10 @@
 - 出力(表示)データ：加速度, 角速度, 角度
 - 出力(表示)形式：
   - Time, AccX1, AccY1, AccZ1, AccX2, AccY2, AccZ2, AngVelX1, AngVelY1, AngVelZ1, AngVelX2, AngVelY2, AngVelZ2, AngX1, AngY1, AngZ1, AngX2, AngY2, AngZ2
+    - Time：
+    - Acc：加速度
+    - AngVel：角速度
+    - Ang：角度
 
 ### 参考
 - https://qiita.com/Dorebom/items/19b69293b811da2f7851
