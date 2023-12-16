@@ -12,13 +12,13 @@
 - https://qiita.com/Dorebom/items/19b69293b811da2f7851
 
 ### 必要モジュール
-py -m pip install pyserial
-
+- pyserial
 
 ### 使い方
 1. srcフォルダをDL
 2. main.pyをテキストエディタで開き、"COM5","COM8"の部分を自身のセンサーのポートに変更
-4. コマンドプロンプト等で"python main.py"を実行
+3. 適宜必要モジュールを追加する
+4. コマンドプロンプト等で"main.py"を実行
 5. 接続完了後, 指示に従って-1または1を入力
     - -1の場合：取得したデータの表示のみを行う
     - 1の場合：データをcsv出力
