@@ -17,13 +17,12 @@ class SensorDataLogger:
     def set_output_interval(self, interval):
         self.output_interval = interval
     
-    # CSVファイルの初期化
+    # CSVファイルの初期化("csv/YYMMDD/"に"YYMMDD_HHMMSS_sensor_raw.csv"を作成)
     def init_csv(self):
-        if not os.path.exists('csv'):
-            os.makedirs('csv')
-
         current_time = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
-        self.filename = f'csv/{current_time}_sensor_data.csv'
+        folder_path = f'csv/{current_time[:6]}/'
+        os.makedirs(folder_path, exist_ok=True)
+        self.filename = f'{folder_path}{current_time}_sensor_raw.csv'
         self.header = 'Time, AccX1, AccY1, AccZ1, AccX2, AccY2, AccZ2, AngVelX1, AngVelY1, AngVelZ1, AngVelX2, AngVelY2, AngVelZ2, AngX1, AngY1, AngZ1, AngX2, AngY2, AngZ2\n'
 
     # Ctrl+Cでの終了時処理
