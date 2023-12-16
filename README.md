@@ -11,6 +11,10 @@
 ### 参考
 - https://qiita.com/Dorebom/items/19b69293b811da2f7851
 
+### 必要モジュール
+py -m pip install pyserial
+
+
 ### 使い方
 1. srcフォルダをDL
 2. main.pyをテキストエディタで開き、"COM5","COM8"の部分を自身のセンサーのポートに変更
