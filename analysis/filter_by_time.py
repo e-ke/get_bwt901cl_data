@@ -1,11 +1,13 @@
 import os 
 import pandas as pd
 
+
 filter_dict = {
     "sample\\231213_181935_sensor_data.csv": {"start": "18:19:37.430", "end": "18:19:41.310"},
     "sample\\231213_182054_sensor_data.csv": {"start": "18:20:56.000", "end": "18:21:01.190"},
     # csvフォルダ内の対象ファイルと時間範囲をここに追加
 }
+
 
 def filter_by_time(csv_filename, st_time, ed_time, output_dir):
     # CSVファイルを読み込む
