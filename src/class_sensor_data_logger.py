@@ -20,9 +20,10 @@ class SensorDataLogger:
     # CSVファイルの初期化("csv/YYMMDD/"に"YYMMDD_HHMMSS_sensor_raw.csv"を作成)
     def init_csv(self):
         current_time = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
-        folder_path = f'csv/{current_time[:6]}/'
+        # folder_path = f'csv/{current_time[:6]}/'
+        folder_path = f'../csv/{current_time[:6]}/'
         os.makedirs(folder_path, exist_ok=True)
-        self.filename = f'{folder_path}{current_time}_sensor_raw.csv'
+        self.filename = f'{folder_path}{current_time}_sensor_data.csv'
         self.header = 'Time, AccX1, AccY1, AccZ1, AccX2, AccY2, AccZ2, AngVelX1, AngVelY1, AngVelZ1, AngVelX2, AngVelY2, AngVelZ2, AngX1, AngY1, AngZ1, AngX2, AngY2, AngZ2\n'
 
     # Ctrl+Cでの終了時処理
