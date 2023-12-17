@@ -24,7 +24,7 @@ class SensorDataLogger:
         folder_path = f'../csv/{current_time[:6]}/'
         os.makedirs(folder_path, exist_ok=True)
         self.filename = f'{folder_path}{current_time}_sensor_data.csv'
-        self.header = 'Time, AccX1, AccY1, AccZ1, AccX2, AccY2, AccZ2, AngVelX1, AngVelY1, AngVelZ1, AngVelX2, AngVelY2, AngVelZ2, AngX1, AngY1, AngZ1, AngX2, AngY2, AngZ2\n'
+        self.header = 'Time,AccX1,AccY1,AccZ1,AccX2,AccY2,AccZ2,AngVelX1,AngVelY1,AngVelZ1,AngVelX2,AngVelY2,AngVelZ2,AngX1,AngY1,AngZ1,AngX2,AngY2,AngZ2\n'
 
     # Ctrl+Cでの終了時処理
     def handle_keyboard_interrupt(self, stop_event, thread1, thread2):
@@ -106,7 +106,7 @@ class SensorDataLogger:
                     print(end=".")  # 動作確認用
                     
                     time_stamp = datetime.datetime.now().strftime("%H:%M:%S.%f")[:-3]
-                    file.write(f'{time_stamp}, '
+                    file.write(f'{time_stamp},'
                                f'{s1_Acc[0]},{s1_Acc[1]},{s1_Acc[2]},'
                                f'{s2_Acc[0]},{s2_Acc[1]},{s2_Acc[2]},'
                                f'{s1_angVel[0]},{s1_angVel[1]},{s1_angVel[2]},'
