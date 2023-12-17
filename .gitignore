@@ -154,4 +154,8 @@ cython_debug/
 
 
 # add
-csv/
+# csvフォルダ内のsampleフォルダ以外を無視
+csv/*
+!csv/sample/
+analysis/time_filtered
+
