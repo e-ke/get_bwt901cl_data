@@ -1,9 +1,9 @@
 # get_bwt901_data
-2台のBWT901CLセンサーのデータを同時に読み取るプログラム。(windows)
-- 出力(表示)データ：加速度, 角速度, 角度
-- 出力(表示)形式：
+2台のBWT901CLセンサーのデータを同時に読み取るプログラム。(windows)+グラフ化
+- 出力データ：加速度, 角速度, 角度
+- 出力形式：
   - Time, AccX1, AccY1, AccZ1, AccX2, AccY2, AccZ2, AngVelX1, AngVelY1, AngVelZ1, AngVelX2, AngVelY2, AngVelZ2, AngX1, AngY1, AngZ1, AngX2, AngY2, AngZ2
-    - Time：
+    - Time：hh:mm:ss.fff
     - Acc：加速度
     - AngVel：角速度
     - Ang：角度
@@ -13,6 +13,8 @@
 
 ### 必要モジュール
 - pyserial
+- pandas
+- matplotlib
 
 ### 使い方
 1. srcフォルダをDL
@@ -20,16 +22,18 @@
 3. 適宜必要モジュールを追加する
 4. コマンドプロンプト等で"main.py"を実行
 5. 接続完了後, 指示に従って-1または1を入力
-    - -1の場合：取得したデータの表示のみを行う
-    - 1の場合：データをcsv出力
+    - -1：取得したデータの表示のみを行う
+    - 1：データをcsv出力
 6. Ctrl+Cでプログラムを終了
 
-### main.py
-- 実行用
-- 2台のセンサーのポートを指定
-- テスト：データ表示のみ
-- 実行：データcsv書き込み
-- プログラム停止方法：Ctrl+C
-
-### class_sensor_data_logger.py
-- set_output_interval() : 出力頻度を変更
+### 出力データのグラフ化
+- filter_by_time.py
+  - csvデータの開始時刻と終了時刻を設定（開始～終了時刻外のデータを削除）
+  - 出力先：time_filteredフォルダ
+- sensor_data_plotter
+  - グラフ化とRMSの計算を行う。
+  - save_sensor_graph
+    - time_filtered内のcsvデータを全てグラフ化して保存
+    - 出力先：analyze\\sensordataplotter\\imgフォルダ
+  - show_sensor_graph
+    - csvデータを指定し、グラフとして表示(保存なし)

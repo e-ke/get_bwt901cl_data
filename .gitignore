@@ -157,5 +157,7 @@ cython_debug/
 # csvフォルダ内のsampleフォルダ以外を無視
 csv/*
 !csv/sample/
-analize/time_filtered
+
+analyze/time_filtered
+analyze/sensor_data_plotter/img
 
