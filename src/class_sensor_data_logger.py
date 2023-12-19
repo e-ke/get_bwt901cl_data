@@ -64,31 +64,6 @@ class SensorDataLogger:
         s2_ang = self.sensor2.getAngle()
         return s1_Acc, s2_Acc, s1_angVel, s2_angVel, s1_ang, s2_ang
 
-    # テスト用(データの表示のみ(csv出力なし))
-    def run_test(self):
-        stop_event = threading.Event()
-        thread1, thread2 = self.setup_threads(stop_event)
-
-        try:
-            while True:
-                s1_Acc, s2_Acc, s1_angVel, s2_angVel, s1_ang, s2_ang = self.get_sensor_data()
-                # 各データを整列して表示
-                data_format = "{:8.3f}"
-                s1_Acc_str = " ".join(data_format.format(a) for a in s1_Acc)
-                s2_Acc_str = " ".join(data_format.format(a) for a in s2_Acc)
-                s1_angVel_str = " ".join(data_format.format(a) for a in s1_angVel)
-                s2_angVel_str = " ".join(data_format.format(a) for a in s2_angVel)
-                s1_ang_str = " ".join(data_format.format(a) for a in s1_ang)
-                s2_ang_str = " ".join(data_format.format(a) for a in s2_ang)
-
-                print(f"Acc1:{s1_Acc_str}|Acc2:{s2_Acc_str}",end="||")
-                print(f"AngVel1:{s1_angVel_str}|AngVel2:{s2_angVel_str}",end="||")
-                print(f"Ang1:{s1_ang_str}|Ang2:{s2_ang_str}")
-
-                sleep(self.output_interval) # 出力頻度
-        except KeyboardInterrupt:
-            self.handle_keyboard_interrupt(stop_event, thread1, thread2)
-
     # 実行用(データの表示(動作確認用)とcsv出力)
     def run(self):
         self.init_csv()
@@ -103,7 +78,19 @@ class SensorDataLogger:
             try:
                 while True:
                     s1_Acc, s2_Acc, s1_angVel, s2_angVel, s1_ang, s2_ang = self.get_sensor_data()
-                    print(end=".")  # 動作確認用
+                    
+                    # センサーデータを表示するためのコードを追加
+                    data_format = "{:8.3f}"
+                    s1_Acc_str = " ".join(data_format.format(a) for a in s1_Acc)
+                    s2_Acc_str = " ".join(data_format.format(a) for a in s2_Acc)
+                    s1_angVel_str = " ".join(data_format.format(a) for a in s1_angVel)
+                    s2_angVel_str = " ".join(data_format.format(a) for a in s2_angVel)
+                    s1_ang_str = " ".join(data_format.format(a) for a in s1_ang)
+                    s2_ang_str = " ".join(data_format.format(a) for a in s2_ang)
+
+                    print(f"Acc1:{s1_Acc_str}|Acc2:{s2_Acc_str}", end="||")
+                    print(f"AngVel1:{s1_angVel_str}|AngVel2:{s2_angVel_str}", end="||")
+                    print(f"Ang1:{s1_ang_str}|Ang2:{s2_ang_str}")
                     
                     time_stamp = datetime.datetime.now().strftime("%H:%M:%S.%f")[:-3]
                     file.write(f'{time_stamp},'
@@ -114,7 +101,7 @@ class SensorDataLogger:
                                f'{s1_ang[0]},{s1_ang[1]},{s1_ang[2]},'
                                f'{s2_ang[0]},{s2_ang[1]},{s2_ang[2]}\n')
 
-                    if time() - last_flush_time > 60:
+                    if time() - last_flush_time > 30:
                         file.flush()
                         last_flush_time = time()
 
