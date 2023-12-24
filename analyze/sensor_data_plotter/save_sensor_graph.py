@@ -1,10 +1,9 @@
 import os
 from class_sensordataplotter import SensorDataPlotter
 
-# ベースディレクトリとターゲットディレクトリの設定
-base_directory = os.path.dirname(
-    os.path.dirname(os.path.abspath(__file__)))  # analyzeディレクトリ
-target_directory = os.path.join(base_directory, 'time_filtered')
+# analyzeディレクトリ
+base_directory = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+target_directory = os.path.join(base_directory, 'time_filtered//231213')
 
 # 指定ディレクトリ内のすべてのcsvファイルをリストアップ
 csv_files = [os.path.join(target_directory, f) for f in os.listdir(target_directory) if f.endswith('.csv')]

@@ -3,12 +3,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 class SensorDataPlotter:
-    def __init__(self, csv_file_path, output_file_path=None):
-        if output_file_path is None:  # 出力先が指定されていない場合は、実行ファイルの位置に保存
-            output_file_path = os.path.dirname(os.path.abspath(__file__))
-        
+    def __init__(self, csv_file_path):
         self.csv_file_path = csv_file_path
-        self.output_file_path = os.path.join(output_file_path, 'img')
+        self.output_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'img')
         os.makedirs(self.output_file_path, exist_ok=True)  # imgフォルダを作成
         self.df = self.load_data()
 
@@ -85,7 +82,6 @@ class SensorDataPlotter:
         print()
         
         
-
     # グラフ保存
     def plot_acceleration(self, sensor_id):
         self.plot_data([f'AccX{sensor_id}', f'AccY{sensor_id}', f'AccZ{sensor_id}'],

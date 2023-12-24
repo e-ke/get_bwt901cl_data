@@ -10,6 +10,13 @@ filter_dict = {
 
 
 def filter_by_time(csv_filename, st_time, ed_time, output_dir):
+    # ファイル名を抽出
+    file_name = csv_filename.rsplit('.', 1)[0].rsplit('\\', 1)[-1]
+    # YYMMDDのサブディレクトリを生成
+    yymmdd = file_name.split('_')[0]
+    new_subdir = os.path.join(output_dir, yymmdd)
+    os.makedirs(new_subdir, exist_ok=True)
+
     # CSVファイルを読み込む
     df = pd.read_csv(csv_filename, dtype=object)
     
@@ -26,8 +33,8 @@ def filter_by_time(csv_filename, st_time, ed_time, output_dir):
     # 時間列を文字列に変換
     filtered_df.iloc[:, 0] = filtered_df.iloc[:, 0].apply(lambda x: x.strftime("%H:%M:%S.%f")[:-3])
     
-    # 新しいCSVファイル名を生成
-    new_csv_filename = os.path.join(output_dir, csv_filename.rsplit('.', 1)[0].rsplit('\\', 1)[-1] + "_timeFiltered.csv")
+    # 新しいCSVファイル名を生成（新しいサブディレクトリに保存）
+    new_csv_filename = os.path.join(new_subdir, file_name + "_timeFiltered.csv")
     
     # CSVファイルとして保存
     filtered_df.to_csv(new_csv_filename, index=False)
