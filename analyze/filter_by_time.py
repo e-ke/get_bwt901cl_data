@@ -3,32 +3,32 @@ import pandas as pd
 
 
 filter_dict = {
+    # csvフォルダ内のファイルパス: {開始時刻, 終了時刻}
     "sample\\231213_181935_sensor_data.csv": {"start": "18:19:37.430", "end": "18:19:41.310"},
     "sample\\231213_182054_sensor_data.csv": {"start": "18:20:56.000", "end": "18:21:01.190"},
-    # csvフォルダ内の対象ファイルと時間範囲をここに追加
 }
 
 
 def filter_by_time(csv_filename, st_time, ed_time, output_dir):
     # CSVファイルを読み込む
     df = pd.read_csv(csv_filename, dtype=object)
-
+    
     # 時間データの形式を変換
     df.iloc[:, 0] = pd.to_datetime(df.iloc[:, 0], format="%H:%M:%S.%f").dt.time
-
+    
     # 時間の範囲を設定
     st_time = pd.to_datetime(st_time, format="%H:%M:%S.%f").time()
     ed_time = pd.to_datetime(ed_time, format="%H:%M:%S.%f").time()
-
+    
     # 時間でフィルタリング
     filtered_df = df[(df.iloc[:, 0] >= st_time) & (df.iloc[:, 0] <= ed_time)].copy()
-
+    
     # 時間列を文字列に変換
     filtered_df.iloc[:, 0] = filtered_df.iloc[:, 0].apply(lambda x: x.strftime("%H:%M:%S.%f")[:-3])
-
+    
     # 新しいCSVファイル名を生成
     new_csv_filename = os.path.join(output_dir, csv_filename.rsplit('.', 1)[0].rsplit('\\', 1)[-1] + "_timeFiltered.csv")
-
+    
     # CSVファイルとして保存
     filtered_df.to_csv(new_csv_filename, index=False)
 
@@ -42,18 +42,18 @@ def main():
     output_dir = os.path.join(parent_dir, output_dir_name)
     os.makedirs(output_dir, exist_ok=True)
     
-    # CSVファイルのディレクトリ
-    csv_dir = os.path.join(
-                os.path.dirname(parent_dir),
-                "csv")
+    # CSVファイルのディレクトリを指定
+    csv_dir = os.path.join(os.path.dirname(parent_dir), "csv")
 
+    # 時間でフィルタリング
     for filename, time_range in filter_dict.items():
         full_path = os.path.join(csv_dir, filename)
         if os.path.exists(full_path):
-            new_csv_filename = filter_by_time(full_path, time_range["start"], time_range["end"], output_dir)
+            filter_by_time(full_path, time_range["start"], time_range["end"], output_dir)
             print(f"{filename} is filtered")
         else:
             print(f"ファイル {filename} が見つかりませんでした。")
+
 
 if __name__ == "__main__":
     main()
