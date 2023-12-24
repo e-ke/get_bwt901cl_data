@@ -154,4 +154,10 @@ cython_debug/
 
 
 # add
-csv/
+# csvフォルダ内のsampleフォルダ以外を無視
+csv/*
+!csv/sample/
+
+analyze/time_filtered
+analyze/sensor_data_plotter/img
+get_bwt901cl_data.code-workspace

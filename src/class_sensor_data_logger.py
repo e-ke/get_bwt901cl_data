@@ -17,14 +17,14 @@ class SensorDataLogger:
     def set_output_interval(self, interval):
         self.output_interval = interval
     
-    # CSVファイルの初期化
+    # CSVファイルの初期化("csv/YYMMDD/"に"YYMMDD_HHMMSS_sensor_raw.csv"を作成)
     def init_csv(self):
-        if not os.path.exists('csv'):
-            os.makedirs('csv')
-
         current_time = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
-        self.filename = f'csv/{current_time}_sensor_data.csv'
-        self.header = 'Time, AccX1, AccY1, AccZ1, AccX2, AccY2, AccZ2, AngVelX1, AngVelY1, AngVelZ1, AngVelX2, AngVelY2, AngVelZ2, AngX1, AngY1, AngZ1, AngX2, AngY2, AngZ2\n'
+        # folder_path = f'csv/{current_time[:6]}/'
+        folder_path = f'../csv/{current_time[:6]}/'
+        os.makedirs(folder_path, exist_ok=True)
+        self.filename = f'{folder_path}{current_time}_sensor_data.csv'
+        self.header = 'Time,AccX1,AccY1,AccZ1,AccX2,AccY2,AccZ2,AngVelX1,AngVelY1,AngVelZ1,AngVelX2,AngVelY2,AngVelZ2,AngX1,AngY1,AngZ1,AngX2,AngY2,AngZ2\n'
 
     # Ctrl+Cでの終了時処理
     def handle_keyboard_interrupt(self, stop_event, thread1, thread2):
@@ -64,31 +64,6 @@ class SensorDataLogger:
         s2_ang = self.sensor2.getAngle()
         return s1_Acc, s2_Acc, s1_angVel, s2_angVel, s1_ang, s2_ang
 
-    # テスト用(データの表示のみ(csv出力なし))
-    def run_test(self):
-        stop_event = threading.Event()
-        thread1, thread2 = self.setup_threads(stop_event)
-
-        try:
-            while True:
-                s1_Acc, s2_Acc, s1_angVel, s2_angVel, s1_ang, s2_ang = self.get_sensor_data()
-                # 各データを整列して表示
-                data_format = "{:8.3f}"
-                s1_Acc_str = " ".join(data_format.format(a) for a in s1_Acc)
-                s2_Acc_str = " ".join(data_format.format(a) for a in s2_Acc)
-                s1_angVel_str = " ".join(data_format.format(a) for a in s1_angVel)
-                s2_angVel_str = " ".join(data_format.format(a) for a in s2_angVel)
-                s1_ang_str = " ".join(data_format.format(a) for a in s1_ang)
-                s2_ang_str = " ".join(data_format.format(a) for a in s2_ang)
-
-                print(f"Acc1:{s1_Acc_str}|Acc2:{s2_Acc_str}",end="||")
-                print(f"AngVel1:{s1_angVel_str}|AngVel2:{s2_angVel_str}",end="||")
-                print(f"Ang1:{s1_ang_str}|Ang2:{s2_ang_str}")
-
-                sleep(self.output_interval) # 出力頻度
-        except KeyboardInterrupt:
-            self.handle_keyboard_interrupt(stop_event, thread1, thread2)
-
     # 実行用(データの表示(動作確認用)とcsv出力)
     def run(self):
         self.init_csv()
@@ -103,10 +78,22 @@ class SensorDataLogger:
             try:
                 while True:
                     s1_Acc, s2_Acc, s1_angVel, s2_angVel, s1_ang, s2_ang = self.get_sensor_data()
-                    print(end=".")  # 動作確認用
+                    
+                    # センサーデータを表示するためのコードを追加
+                    data_format = "{:8.3f}"
+                    s1_Acc_str = " ".join(data_format.format(a) for a in s1_Acc)
+                    s2_Acc_str = " ".join(data_format.format(a) for a in s2_Acc)
+                    s1_angVel_str = " ".join(data_format.format(a) for a in s1_angVel)
+                    s2_angVel_str = " ".join(data_format.format(a) for a in s2_angVel)
+                    s1_ang_str = " ".join(data_format.format(a) for a in s1_ang)
+                    s2_ang_str = " ".join(data_format.format(a) for a in s2_ang)
+
+                    print(f"Acc1:{s1_Acc_str}|Acc2:{s2_Acc_str}", end="||")
+                    print(f"AngVel1:{s1_angVel_str}|AngVel2:{s2_angVel_str}", end="||")
+                    print(f"Ang1:{s1_ang_str}|Ang2:{s2_ang_str}")
                     
                     time_stamp = datetime.datetime.now().strftime("%H:%M:%S.%f")[:-3]
-                    file.write(f'{time_stamp}, '
+                    file.write(f'{time_stamp},'
                                f'{s1_Acc[0]},{s1_Acc[1]},{s1_Acc[2]},'
                                f'{s2_Acc[0]},{s2_Acc[1]},{s2_Acc[2]},'
                                f'{s1_angVel[0]},{s1_angVel[1]},{s1_angVel[2]},'
@@ -114,7 +101,7 @@ class SensorDataLogger:
                                f'{s1_ang[0]},{s1_ang[1]},{s1_ang[2]},'
                                f'{s2_ang[0]},{s2_ang[1]},{s2_ang[2]}\n')
 
-                    if time() - last_flush_time > 60:
+                    if time() - last_flush_time > 30:
                         file.flush()
                         last_flush_time = time()
 
